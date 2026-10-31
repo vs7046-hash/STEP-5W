@@ -1,0 +1,30 @@
+class MovieTicket {
+    protected double ticketPrice;
+}
+
+class PremiumMovieTicket extends MovieTicket {
+}
+
+public class Main {
+    static String classifyAccess(String fieldModifier, String accessorContext) {
+        switch (accessorContext) {
+            case "SAME_CLASS":
+                return "ALLOWED";
+            case "SAME_PACKAGE":
+                return fieldModifier.equals("private") ? "DENIED" : "ALLOWED";
+            case "DIFFERENT_PACKAGE":
+                return fieldModifier.equals("public") ? "ALLOWED" : "DENIED";
+            case "SUBCLASS_DIFFERENT_PACKAGE_OWN_TYPE":
+                return fieldModifier.equals("public") ||
+                       fieldModifier.equals("protected") ? "ALLOWED" : "DENIED";
+            case "SUBCLASS_DIFFERENT_PACKAGE_PARENT_TYPE":
+                return fieldModifier.equals("public") ? "ALLOWED" : "DENIED";
+        }
+        return "DENIED";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(classifyAccess("protected", "SUBCLASS_DIFFERENT_PACKAGE_OWN_TYPE"));
+        System.out.println(classifyAccess("protected", "SUBCLASS_DIFFERENT_PACKAGE_PARENT_TYPE"));
+    }
+}
